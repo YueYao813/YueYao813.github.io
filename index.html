@@ -88,7 +88,7 @@
   .pub-media video {
     width: 100%;
     height: 100%;
-    object-fit: cover;          /* fill & crop without distortion */
+    object-fit: contain;          /* fill & crop without distortion */
     border-radius: 12px;
     border: 1px solid var(--border);
     background: #000;
@@ -219,34 +219,73 @@
 
     function renderPublications(list) {
       const wrap = document.getElementById('pub-list');
-      // one item per row style
+      wrap.innerHTML = ''; // clear if re-rendering
+    
       list.forEach(p => {
-        // title & meta
-        const title = el('div', { html: `<strong>${p.title}</strong>`});
-        const authors = el('div', { class:'authors', html: (p.authors||[]).map((a,i) => i===0 ? `<strong>${a}</strong>` : a).join(', ') });
-        const venue = el('div', { class:'venue', html: p.venue });
-        const tags = el('div', { class:'tags' }, (p.tags||[]).map(t => el('span', { class:'tag' }, [t])));
-        const btns = el('div', { class:'btnrow' }, [
-          p.links?.paper ? el('a', { class:'btn', href: p.links.paper, target: '_blank', rel: 'noopener' }, ['Paper']) : null,
-          p.links?.preprint ? el('a', { class:'btn', href: p.links.preprint, target: '_blank', rel: 'noopener' }, ['Preprint']) : null,
-          p.links?.code ? el('a', { class:'btn', href: p.links.code, target: '_blank', rel: 'noopener' }, ['Code']) : null,
-          p.links?.video ? el('a', { class:'btn', href: p.links.video, target: '_blank', rel: 'noopener' }, ['Video']) : null,
-          p.links?.doi ? el('a', { class:'btn', href: p.links.doi, target: '_blank', rel: 'noopener' }, ['DOI']) : null
+        // ===== title / meta =====
+        const title   = el('div', { html: `<strong>${p.title}</strong>` });
+        const authors = el(
+          'div',
+          { class: 'authors', html: (p.authors || []).map((a, i) => i === 0 ? `<strong>${a}</strong>` : a).join(', ') }
+        );
+        const venue   = el('div', { class: 'venue', html: p.venue || '' });
+    
+        const btns = el('div', { class: 'btnrow' }, [
+          p.links?.pdf   ? el('a', { class: 'btn', href: p.links.pdf,   target: '_blank', rel: 'noopener' }, ['PDF']) : null,
+          p.links?.code  ? el('a', { class: 'btn', href: p.links.code,  target: '_blank', rel: 'noopener' }, ['Code']) : null,
+          p.links?.video ? el('a', { class: 'btn', href: p.links.video, target: '_blank', rel: 'noopener' }, ['Video']) : null,
+          p.links?.doi   ? el('a', { class: 'btn', href: p.links.doi,   target: '_blank', rel: 'noopener' }, ['DOI']) : null
         ].filter(Boolean));
-  
-  
-        // media block
+    
+        const tags = el('div', { class: 'tags' },
+          (p.tags || []).map(t => el('span', { class: 'tag' }, [t]))
+        );
+    
+        // ===== media (mp4/gif/img) =====
         let mediaNode = null;
-        if (p.media?.mp4 && !prefersReducedMotion()) {
-          mediaNode = el('video', { src: p.media.mp4, muted: true, autoplay: true, loop: true, playsinline: true });
+        if (p.media?.mp4) {
+          const v = document.createElement('video');
+          v.src = p.media.mp4;
+          v.preload = 'metadata';
+          v.muted = true;          // properties (more reliable)
+          v.autoplay = true;
+          v.loop = true;
+          v.playsInline = true;    // iOS
+          v.setAttribute('muted', '');
+          v.setAttribute('playsinline', '');
+          v.setAttribute('webkit-playsinline', '');
+          if (p.media.poster) v.poster = p.media.poster;
+    
+          // try to play; if blocked, enable controls
+          v.addEventListener('canplay', () => {
+            const pr = v.play();
+            if (pr && typeof pr.catch === 'function') {
+              pr.catch(() => { v.controls = true; });
+            }
+          });
+          v.addEventListener('pointerdown', () => {
+            v.muted = true;
+            v.play().catch(() => { v.controls = true; });
+          });
+    
+          mediaNode = v;
         } else if (p.media?.gif) {
           mediaNode = el('img', { src: p.media.gif, alt: p.media.alt || 'teaser', loading: 'lazy' });
         } else if (p.media?.img) {
           mediaNode = el('img', { src: p.media.img, alt: p.media.alt || 'thumbnail', loading: 'lazy' });
         }
-
-
-        const mediaWrap = el('div', { class: 'pub-media' }, mediaNode ? [mediaNode] : []);
+    
+        // aspect ratio / fit: defaults to square + contain (no crop)
+        const mediaWrap = el(
+          'div',
+          {
+            class: 'pub-media',
+            style: `--media-ar:${p.media?.ar || '1 / 1'}; --fit:${p.media?.fit || 'contain'};`
+          },
+          mediaNode ? [mediaNode] : []
+        );
+    
+        // ===== assemble row =====
         const bodyWrap = el('div', { class: 'pub-body pub' }, [title, authors, venue, btns, tags]);
         const row = el('div', { class: 'item pub-row' }, mediaNode ? [mediaWrap, bodyWrap] : [bodyWrap]);
         wrap.appendChild(row);
