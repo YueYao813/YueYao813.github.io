@@ -70,7 +70,7 @@
           <span>•</span>
           <a href="https://github.com/YueYao813">GitHub</a>
           <span>•</span>
-          <a href="cv/YueYao_CV.pdf">CV (PDF)</a>
+          <a href="cv/YueYao_CV.pdf">Resume</a>
         </div>
       </div>
     </header>
@@ -86,27 +86,18 @@
     <section id="about">
       <h2>About</h2>
       <p>
-        I am a PhD candidate working on <span class="kvd">trajectory prediction</span>, <span class="kvd">multi-agent interaction</span>, and <span class="kvd">robot motion planning</span> for autonomous driving. My work has appeared in RA-L, IROS, and ITSC. I build learning-based forecasting models that are interpretable and deployable.
+        I am a PhD candidate working on <span class="kvd">traffic scene prediction</span>, <span class="kvd">multi-agent interaction</span> for robotics and autonomous driving. My work has appeared in RA-L, IROS, and ITSC. I build learning-based forecasting models that are interpretable and deployable.
       </p>
     </section>
 
     <section id="interests" class="grid cols-2">
-      <div class="item">
-        <h2>Research Interests</h2>
-        <ul>
-          <li>Behavior prediction & motion forecasting</li>
-          <li>Interaction-aware planning in multi-agent systems</li>
-          <li>Representation learning for spatio-temporal dynamics</li>
-          <li>Closed-loop evaluation & sim-to-real</li>
-        </ul>
-      </div>
-      <div class="item">
-        <h2>News</h2>
-        <ul id="news-list">
-          <li>2025-09 — RA-L paper accepted! (transfer option to ICRA visible, chose journal-only)</li>
-          <li>2025-06 — Gave a talk at Lab Seminar on Interaction-aware Forecasting.</li>
-        </ul>
-      </div>
+      <h2>Research Interests</h2>
+      <ul>
+        <li>Traffic scene prediction</li>
+        <li>Interaction-aware multi-agent systems</li>
+        <li>Representation learning for spatio-temporal dynamics</li>
+        <li>Closed-loop evaluation & sim-to-real</li>
+      </ul>
     </section>
 
     <section id="publications">
@@ -117,20 +108,8 @@
       </details>
     </section>
 
-    <section id="projects">
-      <h2>Projects</h2>
-      <div id="proj-list" class="grid cols-2"></div>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>
-        Email is best. For collaboration or student mentoring, please include a short blurb on your background and a link to your GitHub/portfolio.
-      </p>
-    </section>
-
     <footer>
-      © <span id="year"></span> Your Name · Built with a single-file template on GitHub Pages
+      © <span id="year"></span> Yue Yao · Personal GitHub Page
     </footer>
   </div>
 
@@ -138,11 +117,11 @@
     // ======== EDIT BELOW: your publications & projects ========
     const publications = [
       {
-        title: "Interaction-Aware Motion Forecasting with …",
-        authors: ["Your Name", "Coauthor A", "Coauthor B"],
-        venue: "IEEE RA-L, 2025",
-        links: { pdf: "papers/ral25.pdf", code: "https://github.com/yourname/forecasting", video: "https://youtu.be/xxxxx" },
-        tags: ["trajectory prediction", "multi-agent", "autonomous driving"],
+        title: "EP-Diffuser: An Efficient Diffusion Model for Traffic Scene Generation and Prediction via Polynomial Representations",
+        authors: ["Yue Yao", "Mohamed-Khalil Bouzidi", "Daniel Goehring", "Joerg Reichardt"],
+        venue: "IEEE Robotics and Automation Letters (RA-L), 2025",
+        links: { pdf: "https://ieeexplore.ieee.org/document/11106685", code: "https://github.com/continental/EP-Diffuser/tree/main"},
+        tags: ["multi-agent", "diffusion model", "autonomous driving"],
         highlight: true
       },
       {
