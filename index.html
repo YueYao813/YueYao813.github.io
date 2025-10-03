@@ -117,6 +117,11 @@
   .kvd { display: inline-block; padding: 2px 6px; border-radius: 6px; background: rgba(0,102,204,.08); border: 1px solid rgba(0,102,204,.18); }
   .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+  .interests-list {
+      margin: 0;
+      padding-left: 1.5em;  /* increase this to shift bullets */
+    }
+
 </style>
 </head>
 <body>
@@ -155,12 +160,12 @@
 
     <section id="interests" class="grid cols-2">
       <h2>Research Interests</h2>
-      <ul>
+      <p>
         <li>Traffic scene prediction</li>
         <li>Interaction-aware multi-agent systems</li>
         <li>Representation learning for spatio-temporal dynamics</li>
         <li>Closed-loop evaluation & sim-to-real</li>
-      </ul>
+      </p>
     </section>
 
     <section id="publications">
