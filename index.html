@@ -79,8 +79,6 @@
       <a href="#about">About</a>
       <a href="#interests">Research</a>
       <a href="#publications">Publications</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
     </nav>
 
     <section id="about">
@@ -92,20 +90,17 @@
 
     <section id="interests" class="grid cols-2">
       <h2>Research Interests</h2>
-      <ul>
+      <p>
         <li>Traffic scene prediction</li>
         <li>Interaction-aware multi-agent systems</li>
         <li>Representation learning for spatio-temporal dynamics</li>
         <li>Closed-loop evaluation & sim-to-real</li>
-      </ul>
+      <\p>
     </section>
 
     <section id="publications">
       <h2>Selected Publications</h2>
       <div id="pub-list" class="grid"></div>
-      <details style="margin-top:12px"><summary>How to cite</summary>
-        <pre class="muted" style="white-space:pre-wrap; background:var(--code); padding:12px; border-radius:8px; border:1px solid var(--border);">BibTeX entries go here…</pre>
-      </details>
     </section>
 
     <footer>
@@ -120,40 +115,32 @@
         title: "EP-Diffuser: An Efficient Diffusion Model for Traffic Scene Generation and Prediction via Polynomial Representations",
         authors: ["Yue Yao", "Mohamed-Khalil Bouzidi", "Daniel Goehring", "Joerg Reichardt"],
         venue: "IEEE Robotics and Automation Letters (RA-L), 2025",
-        links: { pdf: "https://ieeexplore.ieee.org/document/11106685", code: "https://github.com/continental/EP-Diffuser/tree/main"},
-        tags: ["multi-agent", "diffusion model", "autonomous driving"],
+        links: { paper: "https://ieeexplore.ieee.org/document/11106685", preprint: "https://arxiv.org/pdf/2504.05422", code: "https://github.com/continental/EP-Diffuser/tree/main"},
+        media: { img: "assets/ral.jpg", alt: "Graph-based intent reasoning overview" },
+        tags: ["multi-agent behavior generation", "diffusion model", "autonomous driving"],
         highlight: true
       },
       {
-        title: "Graph-based Intent Reasoning for Urban Driving",
-        authors: ["Your Name", "Coauthor"],
-        venue: "IROS, 2024",
-        links: { pdf: "papers/iros24.pdf", code: "https://github.com/yourname/graph-intent" },
-        tags: ["intent", "graph neural networks"],
+        title: "Improving Out-of-Distribution Generalization of Trajectory Prediction for Autonomous Driving via Polynomial Representations",
+        authors: ["Yue Yao", "Shengchao Yan", "Daniel Goehring", "Wolfram Burgard", "Joerg Reichardt"],
+        venue: "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), 2024",
+        links: { paper: "https://ieeexplore.ieee.org/document/10801535", preprint: "https://arxiv.org/pdf/2407.13431", code: "https://github.com/continental/everything-polynomial" },
+        media: { img: "assets/iros.jpg", alt: "Graph-based intent reasoning overview" },
+        tags: ["out-of-distribution robustness", "trajectory prediction", "autonomous driving"],
         highlight: true
       },
       {
-        title: "Closed-loop Evaluation for Forecasting Models",
-        authors: ["Your Name", "Coauthor"],
-        venue: "ITSC, 2023",
-        links: { pdf: "papers/itsc23.pdf" },
-        tags: ["evaluation", "closed-loop"],
-        highlight: false
+        title: "An Empirical Bayes Analysis of Object Trajectory Representation Models",
+        authors: ["Yue Yao", "Daniel Goehring", "Joerg Reichardt"],
+        venue: "IEEE International Conference on Intelligent Transportation Systems (ITSC), 2023",
+        links: { paper: "https://ieeexplore.ieee.org/document/10422243", preprint: "https://arxiv.org/pdf/2211.01696", code: "https://github.com/continental/empirical-bayes-analysis-of-object-trajectory" },
+        media: { img: "assets/itsc.jpg", alt: "Graph-based intent reasoning overview" },
+        tags: ["data analysis", "polynomial representation"],
+        highlight: true
       }
     ];
 
-    const projects = [
-      {
-        name: "MotionBench++",
-        desc: "A lightweight benchmark for closed-loop trajectory prediction in CARLA.",
-        links: { code: "https://github.com/yourname/motionbenchpp", docs: "projects/motionbenchpp" }
-      },
-      {
-        name: "InterPlan",
-        desc: "Interaction-aware planner with uncertainty calibration.",
-        links: { code: "https://github.com/yourname/interplan" }
-      }
-    ];
+
     // ======== EDIT ABOVE ========
 
     function el(tag, attrs={}, children=[]) {
@@ -167,20 +154,36 @@
 
     function renderPublications(list) {
       const wrap = document.getElementById('pub-list');
-      wrap.classList.add('cols-2');
+      // one item per row style
       list.forEach(p => {
+        // title & meta
         const title = el('div', { html: `<strong>${p.title}</strong>`});
-        const authors = el('div', { class:'authors', html: p.authors.map(a => a === 'Your Name' ? `<strong>${a}</strong>` : a).join(', ') });
-        const venue = el('div', { class:'venue' }, [p.venue]);
-        const tags = el('div', { class:'tags' }, p.tags.map(t => el('span', { class:'tag' }, [t])));
+        const authors = el('div', { class:'authors', html: (p.authors||[]).map((a,i) => i===0 ? `<strong>${a}</strong>` : a).join(', ') });
+        const venue = el('div', { class:'venue', html: p.venue });
+        const tags = el('div', { class:'tags' }, (p.tags||[]).map(t => el('span', { class:'tag' }, [t])));
         const btns = el('div', { class:'btnrow' }, [
-          p.links?.pdf ? el('a', { class:'btn', href: p.links.pdf }, ['PDF']) : null,
-          p.links?.code ? el('a', { class:'btn', href: p.links.code }, ['Code']) : null,
-          p.links?.video ? el('a', { class:'btn', href: p.links.video }, ['Video']) : null,
-          p.links?.doi ? el('a', { class:'btn', href: p.links.doi }, ['DOI']) : null
+          p.links?.pdf ? el('a', { class:'btn', href: p.links.pdf, target: '_blank', rel: 'noopener' }, ['PDF']) : null,
+          p.links?.code ? el('a', { class:'btn', href: p.links.code, target: '_blank', rel: 'noopener' }, ['Code']) : null,
+          p.links?.video ? el('a', { class:'btn', href: p.links.video, target: '_blank', rel: 'noopener' }, ['Video']) : null,
+          p.links?.doi ? el('a', { class:'btn', href: p.links.doi, target: '_blank', rel: 'noopener' }, ['DOI']) : null
         ].filter(Boolean));
-        const card = el('div', { class:'item pub', ...(p.highlight?{}:{}) }, [title, authors, venue, btns, tags]);
-        wrap.appendChild(card);
+  
+  
+        // media block
+        let mediaNode = null;
+        if (p.media?.mp4 && !prefersReducedMotion()) {
+          mediaNode = el('video', { src: p.media.mp4, muted: true, autoplay: true, loop: true, playsinline: true });
+        } else if (p.media?.gif) {
+          mediaNode = el('img', { src: p.media.gif, alt: p.media.alt || 'teaser', loading: 'lazy' });
+        } else if (p.media?.img) {
+          mediaNode = el('img', { src: p.media.img, alt: p.media.alt || 'thumbnail', loading: 'lazy' });
+        }
+
+
+        const mediaWrap = el('div', { class: 'pub-media' }, mediaNode ? [mediaNode] : []);
+        const bodyWrap = el('div', { class: 'pub-body pub' }, [title, authors, venue, btns, tags]);
+        const row = el('div', { class: 'item pub-row' }, mediaNode ? [mediaWrap, bodyWrap] : [bodyWrap]);
+        wrap.appendChild(row);
       });
     }
 
