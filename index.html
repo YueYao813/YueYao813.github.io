@@ -13,14 +13,14 @@
   <link rel="icon" href="/assets/favicon.ico" />
   <style>
     :root {
-      --bg: #0b0d10;
-      --fg: #e8edf2;
-      --muted: #b8c1cc;
-      --accent: #4da3ff;
-      --card: #12161b;
-      --border: #20262e;
-      --code: #0f1318;
-      --maxw: 980px;
+       --bg: #ffffff;      /* page background */
+       --fg: #000000;      /* default text color */
+       --muted: #555555;   /* secondary text */
+       --accent: #0066cc;  /* links/buttons */
+       --card: #f8f9fa;    /* card background */
+       --border: #dddddd;  /* border lines */
+       --code: #f0f0f0;    /* code block background */
+       --maxw: 980px;
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
@@ -95,7 +95,7 @@
         <li>Interaction-aware multi-agent systems</li>
         <li>Representation learning for spatio-temporal dynamics</li>
         <li>Closed-loop evaluation & sim-to-real</li>
-      <\p>
+      </p>
     </section>
 
     <section id="publications">
@@ -162,7 +162,8 @@
         const venue = el('div', { class:'venue', html: p.venue });
         const tags = el('div', { class:'tags' }, (p.tags||[]).map(t => el('span', { class:'tag' }, [t])));
         const btns = el('div', { class:'btnrow' }, [
-          p.links?.pdf ? el('a', { class:'btn', href: p.links.pdf, target: '_blank', rel: 'noopener' }, ['PDF']) : null,
+          p.links?.paper ? el('a', { class:'btn', href: p.links.paper, target: '_blank', rel: 'noopener' }, ['Paper']) : null,
+          p.links?.preprint ? el('a', { class:'btn', href: p.links.preprint, target: '_blank', rel: 'noopener' }, ['Preprint']) : null,
           p.links?.code ? el('a', { class:'btn', href: p.links.code, target: '_blank', rel: 'noopener' }, ['Code']) : null,
           p.links?.video ? el('a', { class:'btn', href: p.links.video, target: '_blank', rel: 'noopener' }, ['Video']) : null,
           p.links?.doi ? el('a', { class:'btn', href: p.links.doi, target: '_blank', rel: 'noopener' }, ['DOI']) : null
