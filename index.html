@@ -103,11 +103,13 @@
   }
     
   .pub-desc {
-  margin-top: 8px;      /* space above description */
-  margin-bottom: 8px;   /* optional: space below before buttons/tags */
-  color: var(--muted);  /* makes it visually lighter */
-  line-height: 1.5;     /* improves readability */
-              }
+  margin-top: 10px;                /* space above line */
+  padding-top: 10px;               /* space below line */
+  border-top: 1px solid var(--border); /* light grey divider */
+  color: var(--muted);             /* slightly softer text color */
+  line-height: 1.5;                /* readable text */
+          }
+    
   .pub { display: grid; gap: 6px; }
   .venue { font-weight: 600; letter-spacing: .2px; }
   .authors { color: var(--muted); }
