@@ -246,7 +246,7 @@
         const title = el('div', { html: `<strong>${p.title}</strong>`});
         const authors = el('div', { class:'authors', html: (p.authors||[]).map((a,i) => i===0 ? `<strong>${a}</strong>` : a).join(', ') });
         const venue = el('div', { class:'venue', html: p.venue });
-        const desc  = p.desc ? el('div', { class:'pub-desc' }, [p.desc]) : null;      // ← add this
+        const desc = p.desc ? el('div', { class:'pub-desc', html: p.desc }) : null;      // ← add this
         const tags  = el('div', { class:'tags' }, (p.tags||[]).map(t => el('span', { class:'tag' }, [t])));
         const btns  = el('div', { class:'btnrow' }, [
           p.links?.paper && el('a', { class:'btn', href: p.links.paper, target: '_blank', rel: 'noopener' }, ['Paper']),
