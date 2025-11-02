@@ -232,20 +232,23 @@
 
     function renderPublications(list) {
       const wrap = document.getElementById('pub-list');
+      // one item per row style
       list.forEach(p => {
+        // title & meta
         const title = el('div', { html: `<strong>${p.title}</strong>`});
         const authors = el('div', { class:'authors', html: (p.authors||[]).map((a,i) => i===0 ? `<strong>${a}</strong>` : a).join(', ') });
         const venue = el('div', { class:'venue', html: p.venue });
-        const desc  = p.desc ? el('div', { class:'pub-desc' }, [p.desc]) : null;      // ← add this
-        const tags  = el('div', { class:'tags' }, (p.tags||[]).map(t => el('span', { class:'tag' }, [t])));
-        const btns  = el('div', { class:'btnrow' }, [
-          p.links?.paper && el('a', { class:'btn', href: p.links.paper, target: '_blank', rel: 'noopener' }, ['Paper']),
-          p.links?.preprint && el('a', { class:'btn', href: p.links.preprint, target: '_blank', rel: 'noopener' }, ['Preprint']),
-          p.links?.code && el('a', { class:'btn', href: p.links.code, target: '_blank', rel: 'noopener' }, ['Code']),
-          p.links?.video && el('a', { class:'btn', href: p.links.video, target: '_blank', rel: 'noopener' }, ['Video']),
-          p.links?.doi && el('a', { class:'btn', href: p.links.doi, target: '_blank', rel: 'noopener' }, ['DOI'])
+        const tags = el('div', { class:'tags' }, (p.tags||[]).map(t => el('span', { class:'tag' }, [t])));
+        const btns = el('div', { class:'btnrow' }, [
+          p.links?.paper ? el('a', { class:'btn', href: p.links.paper, target: '_blank', rel: 'noopener' }, ['Paper']) : null,
+          p.links?.preprint ? el('a', { class:'btn', href: p.links.preprint, target: '_blank', rel: 'noopener' }, ['Preprint']) : null,
+          p.links?.code ? el('a', { class:'btn', href: p.links.code, target: '_blank', rel: 'noopener' }, ['Code']) : null,
+          p.links?.video ? el('a', { class:'btn', href: p.links.video, target: '_blank', rel: 'noopener' }, ['Video']) : null,
+          p.links?.doi ? el('a', { class:'btn', href: p.links.doi, target: '_blank', rel: 'noopener' }, ['DOI']) : null
         ].filter(Boolean));
-    
+  
+  
+        // media block
         let mediaNode = null;
         if (p.media?.mp4 && !prefersReducedMotion()) {
           mediaNode = el('video', { src: p.media.mp4, muted: true, autoplay: true, loop: true, playsinline: true });
@@ -254,13 +257,10 @@
         } else if (p.media?.img) {
           mediaNode = el('img', { src: p.media.img, alt: p.media.alt || 'thumbnail', loading: 'lazy' });
         }
-    
+
+
         const mediaWrap = el('div', { class: 'pub-media' }, mediaNode ? [mediaNode] : []);
-        const bodyKids = [title, authors, venue];
-        if (desc) bodyKids.push(desc);                                                  // ← insert here
-        bodyKids.push(btns, tags);
-    
-        const bodyWrap = el('div', { class: 'pub-body pub' }, bodyKids);
+        const bodyWrap = el('div', { class: 'pub-body pub' }, [title, authors, venue, btns, tags]);
         const row = el('div', { class: 'item pub-row' }, mediaNode ? [mediaWrap, bodyWrap] : [bodyWrap]);
         wrap.appendChild(row);
       });
