@@ -101,7 +101,13 @@
     .pub-row { flex-direction: column; }
     .pub-media { width: 100%; aspect-ratio: 16 / 9; } /* nicer for phones */
   }
-
+    
+  .pub-desc {
+  margin-top: 8px;      /* space above description */
+  margin-bottom: 8px;   /* optional: space below before buttons/tags */
+  color: var(--muted);  /* makes it visually lighter */
+  line-height: 1.5;     /* improves readability */
+              }
   .pub { display: grid; gap: 6px; }
   .venue { font-weight: 600; letter-spacing: .2px; }
   .authors { color: var(--muted); }
