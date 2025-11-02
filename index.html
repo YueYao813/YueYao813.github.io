@@ -154,7 +154,7 @@
     <section id="about">
       <h2>About</h2>
        <p>
-        I began my career as an algorithm developer at ZF Friedrichshafen AG, where I gained hands-on experience in applied robotics and intelligent systems. I am now pursuing a PhD on <b>traffic scene prediction</b>, with a particular focus on employing <b>polynomial representations</b> in models to improve performance, robustness, and efficiency.
+        I am pursuing a PhD at Continental AI Lab Berlin. My research focuses on <b>traffic scene prediction</b>, with a particular focus on employing <b>polynomial representations</b> in models to improve performance, robustness, and efficiency.
       </p>
       <p>
         My research spans <b>data analysis</b>, <b>model evaluation</b>, and the <b>design and implementation</b> of novel prediction models. These works have been published at leading venues in robotics and intelligent transportation — including <b>RA-L</b>, <b>IROS</b>, and <b>ICRA</b> — and are accompanied by open-sourced code, contributing to the advancement of the research community.
@@ -191,6 +191,7 @@
         links: { paper: "https://ieeexplore.ieee.org/document/11106685", preprint: "https://arxiv.org/pdf/2504.05422", code: "https://github.com/continental/EP-Diffuser/tree/main"},
         media: { gif: "assets/ral.gif", alt: "Graph-based intent reasoning overview" },
         tags: ["multi-agent behavior generation", "diffusion model", "autonomous driving"],
+        desc: "A diffusion model that jointly generates multi-agent behaviors, cutting compute efficiency while improving scene realism and generalization."
         highlight: true
       },
       {
@@ -200,6 +201,7 @@
         links: { paper: "https://ieeexplore.ieee.org/document/10801535", preprint: "https://arxiv.org/pdf/2407.13431", code: "https://github.com/continental/everything-polynomial" },
         media: { img: "assets/iros_v3.png", alt: "Graph-based intent reasoning overview" },
         tags: ["out-of-distribution robustness", "trajectory prediction", "autonomous driving"],
+        desc: "A diffusion model that jointly generates multi-agent behaviors, cutting compute efficiency while improving scene realism and generalization."
         highlight: true
       },
       {
@@ -228,25 +230,22 @@
       return e;
     }
 
-function renderPublications(list) {
+    function renderPublications(list) {
       const wrap = document.getElementById('pub-list');
-      // one item per row style
       list.forEach(p => {
-        // title & meta
         const title = el('div', { html: `<strong>${p.title}</strong>`});
         const authors = el('div', { class:'authors', html: (p.authors||[]).map((a,i) => i===0 ? `<strong>${a}</strong>` : a).join(', ') });
         const venue = el('div', { class:'venue', html: p.venue });
-        const tags = el('div', { class:'tags' }, (p.tags||[]).map(t => el('span', { class:'tag' }, [t])));
-        const btns = el('div', { class:'btnrow' }, [
-          p.links?.paper ? el('a', { class:'btn', href: p.links.paper, target: '_blank', rel: 'noopener' }, ['Paper']) : null,
-          p.links?.preprint ? el('a', { class:'btn', href: p.links.preprint, target: '_blank', rel: 'noopener' }, ['Preprint']) : null,
-          p.links?.code ? el('a', { class:'btn', href: p.links.code, target: '_blank', rel: 'noopener' }, ['Code']) : null,
-          p.links?.video ? el('a', { class:'btn', href: p.links.video, target: '_blank', rel: 'noopener' }, ['Video']) : null,
-          p.links?.doi ? el('a', { class:'btn', href: p.links.doi, target: '_blank', rel: 'noopener' }, ['DOI']) : null
+        const desc  = p.desc ? el('div', { class:'pub-desc' }, [p.desc]) : null;      // ← add this
+        const tags  = el('div', { class:'tags' }, (p.tags||[]).map(t => el('span', { class:'tag' }, [t])));
+        const btns  = el('div', { class:'btnrow' }, [
+          p.links?.paper && el('a', { class:'btn', href: p.links.paper, target: '_blank', rel: 'noopener' }, ['Paper']),
+          p.links?.preprint && el('a', { class:'btn', href: p.links.preprint, target: '_blank', rel: 'noopener' }, ['Preprint']),
+          p.links?.code && el('a', { class:'btn', href: p.links.code, target: '_blank', rel: 'noopener' }, ['Code']),
+          p.links?.video && el('a', { class:'btn', href: p.links.video, target: '_blank', rel: 'noopener' }, ['Video']),
+          p.links?.doi && el('a', { class:'btn', href: p.links.doi, target: '_blank', rel: 'noopener' }, ['DOI'])
         ].filter(Boolean));
-  
-  
-        // media block
+    
         let mediaNode = null;
         if (p.media?.mp4 && !prefersReducedMotion()) {
           mediaNode = el('video', { src: p.media.mp4, muted: true, autoplay: true, loop: true, playsinline: true });
@@ -255,10 +254,13 @@ function renderPublications(list) {
         } else if (p.media?.img) {
           mediaNode = el('img', { src: p.media.img, alt: p.media.alt || 'thumbnail', loading: 'lazy' });
         }
-
-
+    
         const mediaWrap = el('div', { class: 'pub-media' }, mediaNode ? [mediaNode] : []);
-        const bodyWrap = el('div', { class: 'pub-body pub' }, [title, authors, venue, btns, tags]);
+        const bodyKids = [title, authors, venue];
+        if (desc) bodyKids.push(desc);                                                  // ← insert here
+        bodyKids.push(btns, tags);
+    
+        const bodyWrap = el('div', { class: 'pub-body pub' }, bodyKids);
         const row = el('div', { class: 'item pub-row' }, mediaNode ? [mediaWrap, bodyWrap] : [bodyWrap]);
         wrap.appendChild(row);
       });
